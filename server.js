@@ -1,30 +1,46 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
-import path, {dirname} from 'path';
+import cors from 'cors';
 
+import userRoutes from './backend/routes/userRoutes.js';
+import sudokuRoutes from './backend/routes/sudokuRoutes.js';
+import highscoreRoutes from './backend/routes/highscoreRoutes.js';
+
+dotenv.config();
 
 const app = express();
+const PORT = process.env.PORT || 5001;
 
+// Middleware
+app.use(cors({
+  origin: process.env.CLIENT_ORIGIN || 'http://localhost:5173',
+  credentials: true,
+}));
 app.use(express.json());
-app.use(cookieParser())
-app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
+// Routes
+app.use('/api/user', userRoutes);
+app.use('/api/sudoku', sudokuRoutes);
+app.use('/api/highscore', highscoreRoutes);
 
-const MONGODB_URL = // INSERT MONGO DB URL HERE
-mongoose.connect(MONGODB_URL);
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'Error connecting to MongoDB:'));
-
-
-const frontend_dir = path.join(path.resolve(), 'dist')
-
-app.use(express.static(frontend_dir));
-app.get('*', function (req, res) {
-    res.sendFile(path.join(frontend_dir, "index.html"));
+// Health check — useful for Render to confirm the server is up
+app.get('/api/test', (req, res) => {
+  res.json({ message: 'Backend is working!' });
 });
 
+// MongoDB connection
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('MongoDB connected successfully'))
+  .catch((err) => {
+    console.error('MongoDB connection error:', err);
+    process.exit(1);
+  });
 
-app.listen(8000, function() {
-    console.log("Starting server now...")
-})
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  console.log(`Test API: http://localhost:${PORT}/api/test`);
+});
