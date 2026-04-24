@@ -5,8 +5,9 @@ import { requireAuth } from '../utils/authMiddleware.js';
 import { generateGameName } from '../utils/wordList.js';
 import {
   hasUniqueSolution,
-  generateEmptyBoard,
+  generatePuzzle,
   copyBoard,
+  solveSudoku,
 } from '../utils/sudokuUtils.js';
 
 const router = express.Router();
@@ -32,10 +33,11 @@ const createGameWithRetry = async (gameData) => {
       const game = await Game.create({ ...gameData, name });
       return game;
     } catch (err) {
+      console.error('Game creation attempt failed:', err.code, err.message);
       if (err.code === 11000) {
         attempts++;
       } else {
-        throw err;
+        throw err; // surface the real error immediately
       }
     }
   }

@@ -33,7 +33,24 @@ app.get('/api/test', (req, res) => {
 
 // MongoDB connection
 mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('MongoDB connected successfully'))
+  .then(async () => {
+    console.log('MongoDB connected successfully');
+    
+    // Drop the rogue index if it exists, then sync correct ones
+    try {
+      await mongoose.connection.collection('games').dropIndex('gameId_1');
+      console.log('Dropped stale gameId_1 index');
+    } catch (e) {
+      // Index doesn't exist — that's fine
+    }
+    
+    // Rebuild only the correct indexes defined in your schemas
+    await Promise.all([
+      mongoose.connection.collection('games').createIndex({ name: 1 }, { unique: true }),
+      mongoose.connection.collection('highscores').createIndex({ userId: 1, gameId: 1 }, { unique: true }),
+    ]);
+    console.log('Indexes synced correctly');
+  })
   .catch((err) => {
     console.error('MongoDB connection error:', err);
     process.exit(1);
