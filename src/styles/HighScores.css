@@ -358,7 +358,7 @@
     }
 }
 
-/* ── Additions for P3 HighScores ── */
+
 
 /* Wins count cell */
 .wins-count {
@@ -377,7 +377,7 @@
   background-color: #d6eef8 !important;
 }
 
-/* "(you)" badge next to username */
+
 .you-badge {
   font-size: 0.75rem;
   color: #3498db;

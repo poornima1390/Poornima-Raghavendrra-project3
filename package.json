@@ -1,5 +1,5 @@
 {
-  "name": "cs5610_project2_spr25",
+  "name": "poornima-raghavendrra-project3",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -8,6 +8,7 @@
     "server": "node server.js",
     "build": "vite build",
     "lint": "eslint .",
+    "start": "node server.js",
     "preview": "vite preview"
   },
   "dependencies": {

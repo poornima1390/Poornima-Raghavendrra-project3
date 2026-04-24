@@ -21,7 +21,7 @@ const GamePage = () => {
   const timerRef = useRef(null);
   const saveTimeoutRef = useRef(null); // debounce saves so we don't hit API on every keypress
 
-  // ── Fetch game on mount ────────────────────────────────────────────────────
+  
   useEffect(() => {
     fetch(`/api/sudoku/${id}`, { credentials: 'include' })
       .then((res) => {
@@ -33,12 +33,11 @@ const GamePage = () => {
         const alreadyDone = user && data.completedBy?.includes(user.username);
 
       if (alreadyDone) {
-        // This user already completed it — show solution
+        
         setCompleted(true);
         setBoard(data.solution);
       } else {
-        // Always start from the original puzzle for users who haven't completed it
-        // This prevents user 1's progress from showing for user 2
+        
         setBoard(data.puzzle.map(r => [...r]));
       }
     })
@@ -46,7 +45,7 @@ const GamePage = () => {
     .finally(() => setLoading(false));
 }, [id, user]);
 
-  // ── Timer — only runs while game is active ────────────────────────────────
+  
   useEffect(() => {
     if (!game || completed) return;
     timerRef.current = setInterval(() => setTimer((t) => t + 1), 1000);
@@ -59,7 +58,7 @@ const GamePage = () => {
     return `${m}:${s}`;
   };
 
-  // ── Save board to API (debounced 800ms) ───────────────────────────────────
+  
   const saveBoard = useCallback((newBoard, isCompleted = false) => {
     if (!user) return;
     clearTimeout(saveTimeoutRef.current);
@@ -73,7 +72,7 @@ const GamePage = () => {
     }, 800);
   }, [id, user]);
 
-  // ── Handle cell change from SudokuGrid ────────────────────────────────────
+  
   const handleCellChange = useCallback((row, col, value) => {
     if (completed || !user) return;
 
@@ -95,7 +94,7 @@ const GamePage = () => {
     });
   }, [completed, user, game, saveBoard]);
 
-  // ── Reset board to original puzzle ───────────────────────────────────────
+  
   const handleReset = () => {
     if (!user || completed) return;
     const reset = game.puzzle.map((r) => [...r]);
@@ -103,7 +102,7 @@ const GamePage = () => {
     saveBoard(reset, false);
   };
 
-  // ── Delete game (bonus — only for creator) ────────────────────────────────
+  
   const handleDelete = async () => {
     if (!window.confirm('Delete this game? This cannot be undone.')) return;
     setDeleting(true);
@@ -120,7 +119,7 @@ const GamePage = () => {
     }
   };
 
-  // ── Render ────────────────────────────────────────────────────────────────
+  
   if (loading) return <div className="loading">Loading puzzle...</div>;
   if (error)   return <div className="error-message">{error}</div>;
   if (!game)   return null;
@@ -137,7 +136,7 @@ const GamePage = () => {
         </p>
       </header>
 
-      {/* Controls row */}
+      
       <div className="game-controls">
         <div className="timer-container">
           <i className="far fa-clock"></i>
@@ -177,7 +176,7 @@ const GamePage = () => {
         </p>
       )}
 
-      {/* Board */}
+      
       <div className="game-container">
         <SudokuGrid
           board={board}
@@ -190,7 +189,7 @@ const GamePage = () => {
         />
       </div>
 
-      {/* Win message */}
+      
       {completed && (
         <div className="congratulations-message">
           <i className="fas fa-trophy"></i>
@@ -202,7 +201,7 @@ const GamePage = () => {
         </div>
       )}
 
-      {/* Instructions */}
+      
       {!completed && (
         <div className="game-instructions">
           <p>

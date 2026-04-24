@@ -331,9 +331,6 @@
   }
 }
 
-/* ── Additions for P3 GamePage ── */
-
-/* Normal difficulty badge (P2 only had .easy and .hard) */
 .difficulty-badge-game.normal {
   background-color: #fef9e7;
   color: #f39c12;

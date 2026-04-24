@@ -6,9 +6,7 @@ const router = express.Router();
 
 // ─── GET /api/highscore ───────────────────────────────────────────────────────
 // Returns the sorted leaderboard — users grouped by win count.
-// Ties broken alphabetically by username (ascending).
-// Users with 0 wins are excluded (they have no documents here).
-// Accessible to all users including logged-out.
+
 router.get('/', async (req, res) => {
   try {
     const scores = await Highscore.aggregate([
@@ -56,10 +54,7 @@ router.get('/:gameId', async (req, res) => {
 // ─── POST /api/highscore ──────────────────────────────────────────────────────
 // Body: { gameId }
 // Records a win for the currently logged-in user.
-// Safe to call multiple times — the unique index on {userId, gameId}
-// prevents duplicate wins from being stored.
-// Note: the PUT /api/sudoku/:id route also records wins when completed: true
-// is passed. This endpoint exists as a standalone fallback per the rubric.
+
 router.post('/', requireAuth, async (req, res) => {
   try {
     const { gameId } = req.body;

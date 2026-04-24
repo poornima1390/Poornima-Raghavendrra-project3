@@ -45,8 +45,6 @@ const createGameWithRetry = async (gameData) => {
 };
 
 // ─── GET /api/sudoku ──────────────────────────────────────────────────────────
-// Returns summary list of all games (no puzzle arrays).
-// Accessible to logged-out users (read-only experience).
 router.get('/', async (req, res) => {
   try {
     const games = await Game.find().sort({ createdAt: -1 });
@@ -58,9 +56,6 @@ router.get('/', async (req, res) => {
 });
 
 // ─── POST /api/sudoku ─────────────────────────────────────────────────────────
-// Body: { difficulty: 'normal' | 'easy' }
-// Generates a new puzzle and stores it. Returns the new game's _id.
-// Requires auth — logged-out users cannot create games.
 router.post('/', requireAuth, async (req, res) => {
   try {
     const { difficulty } = req.body;
@@ -93,8 +88,6 @@ router.post('/', requireAuth, async (req, res) => {
 });
 
 // ─── GET /api/sudoku/:id ──────────────────────────────────────────────────────
-// Returns the full game document including puzzle, solution, and currentState.
-// Accessible to logged-out users (they can view but not interact).
 router.get('/:id', async (req, res) => {
   try {
     const game = await Game.findById(req.params.id);
@@ -121,10 +114,6 @@ router.get('/:id', async (req, res) => {
 });
 
 // ─── PUT /api/sudoku/:id ──────────────────────────────────────────────────────
-// Body: { currentState: [[...], ...], completed?: true }
-// Updates the user's current board state.
-// If completed: true, records the win in Highscores.
-// Requires auth.
 router.put('/:id', requireAuth, async (req, res) => {
   try {
     const game = await Game.findById(req.params.id);
@@ -166,8 +155,6 @@ router.put('/:id', requireAuth, async (req, res) => {
 });
 
 // ─── DELETE /api/sudoku/:id ───────────────────────────────────────────────────
-// Deletes the game and all associated highscores.
-// Only the user who created the game can delete it. (+5 bonus pts)
 router.delete('/:id', requireAuth, async (req, res) => {
   try {
     const game = await Game.findById(req.params.id);
@@ -189,10 +176,6 @@ router.delete('/:id', requireAuth, async (req, res) => {
 });
 
 // ─── POST /api/sudoku/validate ────────────────────────────────────────────────
-// BONUS: Custom game submission (+10 pts)
-// Body: { board: [[...], ...] } — a 9x9 board with some cells filled
-// Checks the board has exactly one solution, then creates and saves the game.
-// Returns { _id } on success, 400 if not uniquely solvable.
 router.post('/validate', requireAuth, async (req, res) => {
   try {
     const { board } = req.body;

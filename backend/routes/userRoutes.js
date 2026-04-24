@@ -10,9 +10,6 @@ const COOKIE_OPTIONS = {
 };
 
 // ─── GET /api/user/isLoggedIn ─────────────────────────────────────────────────
-// Checks if a valid session cookie exists.
-// Returns { username } on success, 401 on failure.
-// Called by AuthContext on every app load to restore session state.
 router.get('/isLoggedIn', async (req, res) => {
   try {
     const userId = req.cookies?.userId;
@@ -29,8 +26,6 @@ router.get('/isLoggedIn', async (req, res) => {
 
 // ─── POST /api/user/register ──────────────────────────────────────────────────
 // Body: { username, password }
-// Creates a new user. Fails with 409 if username is taken.
-// Sets cookies and returns { username } on success.
 router.post('/register', async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -62,7 +57,6 @@ router.post('/register', async (req, res) => {
 
 // ─── POST /api/user/login ─────────────────────────────────────────────────────
 // Body: { username, password }
-// Validates credentials. Sets cookies and returns { username } on success.
 router.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -90,7 +84,6 @@ router.post('/login', async (req, res) => {
 });
 
 // ─── POST /api/user/logout ────────────────────────────────────────────────────
-// Clears session cookies. Always returns 200.
 router.post('/logout', (req, res) => {
   res.clearCookie('userId');
   res.clearCookie('username');

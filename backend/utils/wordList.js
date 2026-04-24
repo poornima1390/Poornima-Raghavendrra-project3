@@ -49,10 +49,9 @@ const words = [
   'wisp', 'wolf', 'wood', 'wraith', 'zenith', 'zone',
 ];
 
-// Pick a random element from an array
+
 const pickRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-// Generate a unique 3-word game name like "Amber Coral Stone"
 export const generateGameName = () => {
   const w1 = pickRandom(words);
   let w2 = pickRandom(words);

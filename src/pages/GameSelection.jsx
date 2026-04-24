@@ -10,7 +10,7 @@ const GameSelection = () => {
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [creating, setCreating] = useState(''); // 'normal' | 'easy' | ''
+  const [creating, setCreating] = useState(''); 
 
   // Fetch all existing games on mount
   useEffect(() => {
@@ -98,7 +98,7 @@ const GameSelection = () => {
 
       {error && <p className="error-message">{error}</p>}
 
-      {/* Existing games list */}
+      
       <section className="games-section">
         <h2 className="games-section-title">Existing Games</h2>
 

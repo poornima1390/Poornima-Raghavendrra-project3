@@ -339,7 +339,6 @@
     }
 }
 
-/* Error banner — shown above the form on failed login/register */
 .auth-error {
   background: #fef2f2;
   color: #991b1b;

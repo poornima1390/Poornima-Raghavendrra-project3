@@ -64,7 +64,7 @@ const Navbar = () => {
             </Link>
           </li>
 
-          {/* Logged OUT: show login + register */}
+          
           {!user && (
             <>
               <li className={`nav-item ${isActive('/login')}`}>
@@ -82,7 +82,7 @@ const Navbar = () => {
             </>
           )}
 
-          {/* Logged IN: show username + logout */}
+          
           {user && (
             <>
               <li className="nav-item nav-username">

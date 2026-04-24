@@ -30,7 +30,7 @@ const Home = () => {
             </Link>
           </div>
 
-          {/* Personalised greeting when logged in */}
+          
           {user && (
             <p className="hero-greeting">
               Welcome back, <strong>{user.username}</strong>!

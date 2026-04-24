@@ -137,7 +137,7 @@ const CustomGame = () => {
         </span>
       </div>
 
-      {/* Board */}
+      
       <div className="game-container">
         <div className="sudoku-grid hard-grid">
           {board.map((row, rowIndex) => (
@@ -173,7 +173,7 @@ const CustomGame = () => {
         </p>
       )}
 
-      {/* Actions */}
+      
       <div className="custom-actions">
         <button className="game-action-btn" onClick={handleClear} disabled={submitting}>
           <i className="fas fa-eraser"></i>
